@@ -9,8 +9,8 @@ import java.util.*;
 
 public
 class StoryRusso // We don't have the story class becuase it pervented us from calling main using
-                 // the format provided.
- {
+// the format provided.
+{
   /* the main method is given to you*/
   public static void main(String[] args) {
     Scanner kb = new Scanner(System.in);

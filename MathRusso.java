@@ -125,11 +125,20 @@ public class MathRusso {
       "To do modulus enter %"
     };
     for (int i = 0; i < inputs.length + 2; i++)
-      System.out.println("&" + centerString(i > 0 && i < inputs.length + 1 ? inputs[i - 1] : "", CONSOLE_WIDTH - 2, i == 0 || i == inputs.length + 1 ? '&' : ' ') + "&"); // Technically 2 if-statements
+      System.out.println(
+          "&"
+              + centerString(
+                  i > 0 && i < inputs.length + 1 ? inputs[i - 1] : "",
+                  CONSOLE_WIDTH - 2,
+                  i == 0 || i == inputs.length + 1 ? '&' : ' ')
+              + "&"); // Technically 2 if-statements
   }
 
   // I use this method to center the terminal and make it pretty
   public static String centerString(String input, int width, char fillChar) {
-    return ("" + fillChar).repeat((width - input.length()) / 2) + input + ("" + fillChar).repeat((width - input.length()) / 2) + ((width - input.length()) % 2 == 1 ? "" + fillChar : "");
+    return ("" + fillChar).repeat((width - input.length()) / 2)
+        + input
+        + ("" + fillChar).repeat((width - input.length()) / 2)
+        + ((width - input.length()) % 2 == 1 ? "" + fillChar : "");
   }
 }
