@@ -1,144 +1,96 @@
-import java.util.Scanner;
-
 /*
-name: Aiden Russo
-date: 10/16/22
-program description: In this program we make a simple calculator style system
-self grade: I would give myself a 100% for this assignment because I completed all requirements
+Name: Aiden Russo
+date: 11/13/22
+description: This program makes a simple math quiz, but it only uses integers which make for some wierd answer checks with division
+self grade: I would give a 100 becuase it hits all the requirements
+
+Make sure to remove all the commnets provided by me. Then add your own commnets
 */
+
+import java.util.*;
+
 public class MathRusso {
-  private static int CONSOLE_WIDTH = 80;
 
   public static void main(String[] args) {
-    start();
+    System.out.println(
+        "There are 5 questionsin this math quiz!\n"
+            + "You will get points by answering them correctly!\n"
+            + "Let's take the quiz and good luck!!!\n");
+    prep();
   }
-  /* This must be the last method to implement
-  After you have implemented all the methods*/
-  public static void start() {
+  // This method declares arrays to hold questions, answers and points for each question
+  public static void prep() {
+    String[] mathQuestions = new String[5];
+    int[] answers = new int[5];
+    int[] points = new int[5];
+    Random random = new Random();
     Scanner kb = new Scanner(System.in);
-    System.out.print("How many times do you want to use the software:  ");
-    int count = kb.nextInt();
-    for (int i = 1; i <= count; i++) {
-      list();
-      System.out.print("\nEnter the operation: ");
-      String operation = kb.next();
-      System.out.print("\nEnter a number between 0-9: ");
-      int numA = kb.nextInt();
-      System.out.print("\nEnter a number between 0-9: ");
-      int numB = kb.nextInt();
-      System.out.println(evaluate(numA, numB, operation));
-      System.out.println(
-          convertNumToWord(numA)
-              + ' '
-              + convertOpToWords(operation)
-              + ' '
-              + convertNumToWord(numB)
-              + " is "
-              + evaluate(numA, numB, operation));
+
+    boolean repeat = true;
+    while (repeat) {
+      int max = random.nextInt((20 - 11) + 1) + 11;
+      int min = random.nextInt((10 - 5) + 1) + 5;
+      populate(mathQuestions, answers, points, max, min);
+      int testReturn = test(mathQuestions, answers, points);
+
+      System.out.println("Test Return: " + testReturn);
+
+      System.out.println("Would you like to play again?");
+      String rep = kb.nextLine();
+      if (rep.equals("no")) {
+        repeat = false;
+      }
+    }
+    System.out.println("Goodbye");
+  }
+  // This methos genrates math expressions randomly and assigns points
+  public static void populate(String[] quiz, int[] answer, int[] points, int max, int min) {
+    char[] operation = {'*', '/', '+', '-'}; // valid operations
+    Random random = new Random();
+    for (int i = 0; i < quiz.length; i++) {
+      int int1 = random.nextInt((max - min) + 1) + min;
+      int int2 = random.nextInt((max - min) + 1) + min;
+      int index = random.nextInt((3 - 1) + 1) + 1;
+
+      char op = operation[index];
+
+      String question = int1 + " " + op + " " + int2;
+      quiz[i] = question;
+      answer[i] = calculate(int1, op, int2);
+      points[i] = random.nextInt((10 - 1) + 1) + 1;
     }
   }
-  /*This method get the opration and returns the name of the operation in words. for example
-  if the operation is * , it should return multiply.
-  must use switch statement  */
-  public static String convertOpToWords(String operator) {
-    switch (operator) {
-      case "+":
-        return "plus";
-      case "*":
-        return "multiply";
-      case "-":
-        return "minus";
-      case "/":
-        return "divide";
-      case "^":
-        return "to the power of";
-      case "%":
-        return "mod";
-    }
 
-    return "";
-  }
-
-  /* This method gets a number 1-9 and returns it in  words.
-  for example if the num is 1 it shuld return one
-  must use if/else statements in this method
-  */
-
-  public static String convertNumToWord(int a) {
-    if (a == 0) {
-      return "zero";
-    } else if (a == 1) {
-      return "one";
-    } else if (a == 2) {
-      return "two";
-    } else if (a == 3) {
-      return "three";
-    } else if (a == 4) {
-      return "four";
-    } else if (a == 5) {
-      return "five";
-    } else if (a == 6) {
-      return "six";
-    } else if (a == 7) {
-      return "seven";
-    } else if (a == 8) {
-      return "eight";
-    } else if (a == 9) {
-      return "nine";
-    }
-    return "";
-  }
-  /*
-  this method gets two numbers and the operation and returns the result of the expression.
-  for example if this method gets 3, 2 and * , then the method should return 6
-  Must use switch cases
-  */
-  public static int evaluate(int a, int b, String op) {
+  public static int calculate(int num1, char op, int num2) {
     switch (op) {
-      case "+":
-        return a + b;
-      case "*":
-        return a * b;
-      case "-":
-        return a - b;
-      case "/":
-        return a / b;
-      case "^":
-        return a ^ b;
-      case "%":
-        return a % b;
+      case '*':
+        return num1 * num2;
+      case '/':
+        return num1 / num2;
+      case '+':
+        return num1 + num2;
+      case '-':
+        return num1 - num2;
+      default:
+        return -1;
     }
-    return 0;
-  }
-  /*This method list all the operations that the user can choose from.
-  You must create your own menu and  not to use the menu that I provided in the sample output
-  be creative and provide a user freindly menu.
-  providing the exact same menu as the sample output, will not get credit
-  */
-  public static void list() {
-    String[] inputs = {
-      "To do addition enter +",
-      "To do multiplication enter *",
-      "To do subtraction enter -",
-      "To do division enter /",
-      "To do exponent enter ^",
-      "To do modulus enter %"
-    };
-    for (int i = 0; i < inputs.length + 2; i++)
-      System.out.println(
-          "&"
-              + centerString(
-                  i > 0 && i < inputs.length + 1 ? inputs[i - 1] : "",
-                  CONSOLE_WIDTH - 2,
-                  i == 0 || i == inputs.length + 1 ? '&' : ' ')
-              + "&"); // Technically 2 if-statements
   }
 
-  // I use this method to center the terminal and make it pretty
-  public static String centerString(String input, int width, char fillChar) {
-    return ("" + fillChar).repeat((width - input.length()) / 2)
-        + input
-        + ("" + fillChar).repeat((width - input.length()) / 2)
-        + ((width - input.length()) % 2 == 1 ? "" + fillChar : "");
+  // This method ask the questions and grades them
+  public static int test(String[] questions, int[] answers, int[] values) {
+    int score = 0;
+    Scanner kb = new Scanner(System.in);
+    for (int i = 0; i < answers.length; i++) {
+      System.out.println(questions[i]);
+      int response = kb.nextInt();
+      if (response == answers[i]) {
+        score = score + values[i];
+        System.out.println("You have scored " + values[i] + " points!");
+      } else {
+        System.out.println("Your answer is wrong :(");
+      }
+    }
+
+    return score;
   }
 }
